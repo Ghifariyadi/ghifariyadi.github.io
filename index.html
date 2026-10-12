@@ -293,6 +293,29 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .sh-ca{fill:#1f7a3d;stroke:#ffffff;stroke-width:1.4}.shield.ca .sh-n{fill:#ffffff;font-size:9px}
 .park-l{font:600 12px var(--f);fill:#3f7a45;paint-order:stroke;stroke:#f5f5f2;stroke-width:3px}
 .water-l{font:italic 600 17px var(--f);fill:#4a83a8;letter-spacing:.04em}
+/* split route list */
+#dests{display:flex;flex-direction:column;gap:22px}
+.grp{display:flex;flex-direction:column;gap:8px}
+.grp-l{display:flex;align-items:center}
+.timeline .dest:nth-last-child(2)::after,.timeline .acc:last-child::before{display:none}
+.grp-l span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);background:var(--sunk);border-radius:999px;padding:2px 8px;letter-spacing:0;text-transform:none}
+/* category tabs */
+.tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);margin-bottom:4px}
+.tab{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 4px;font-weight:700;font-size:15px;color:var(--ink-3);transition:color .2s}
+.tab span{font-family:var(--mono);font-size:11px;font-weight:500;background:var(--sunk);border-radius:999px;padding:2px 7px;color:var(--ink-3)}
+.tab[aria-selected="true"]{color:var(--ink)}.tab[aria-selected="true"] span{background:var(--ink);color:var(--surface)}
+.tab:hover{color:var(--ink)}
+.tab-ink{position:absolute;left:0;bottom:-1px;height:3px;border-radius:3px;background:var(--ink);transition:transform .35s cubic-bezier(.2,.8,.2,1),width .35s}
+.grp-l{display:none !important}
+.grp[hidden]{display:none !important}
+/* category tabs as pill toggle */
+.tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border-radius:999px;padding:4px;border-bottom:0;margin-bottom:6px}
+.tab{position:relative;z-index:1;border-radius:999px;padding:11px 6px;font-size:15px;color:var(--ink-2)}
+.tab[aria-selected="true"]{color:var(--surface)}
+.tab[aria-selected="true"] span{background:rgba(255,255,255,.18);color:var(--surface)}
+.tab:hover{color:var(--ink)}.tab[aria-selected="true"]:hover{color:var(--surface)}
+.tab-ink{top:4px;bottom:4px;left:0;height:auto;border-radius:999px;background:var(--ink);z-index:0}
+
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -400,7 +423,7 @@ const isMob=()=>$("frame").clientWidth<=820;
 const O=[480,540];
 const P=[
  {id:"tazkia",cat:"edu",name:"Universitas Tazkia",logo:"taz",yr:"2020",pin:[40,680],
-  title:"Universitas Tazkia",sub:"Bachelor of Economics in Business Management",when:"Graduated Aug 2020",chip:"Completed trip",
+  title:"Universitas Tazkia",sub:"Bachelor of Economics",when:"Graduated Aug 2020",chip:"Completed trip",
   desc:"",facts:[["Level","Bachelor's"],["Country","Indonesia"],["GPA","3.58 / 4.00"]]},
  {id:"ucb",cat:"edu",name:"UC Berkeley",logo:"ucb",yr:"2026–27",pin:[900,230],
   title:"University of California, Berkeley",sub:"Master of Computational Social Science",when:"Expected May 2027",chip:"Current trip",
@@ -451,13 +474,19 @@ const mark=p=>p.logo?`<img src="${LOGO[p.logo]}" alt="">`:`<span class="init">${
 const el=(t,a,pa)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);pa&&pa.appendChild(e);return e};
 
 /* destination list */
-$("dests").innerHTML=`<div class="label" id="lab-r">My route<span>${P.length} stops</span></div>
-  <div class="dests timeline" role="radiogroup" aria-labelledby="lab-r">${[...P].reverse().map(p=>`
+function setTab(c){document.querySelectorAll(".grp").forEach(g=>g.hidden=g.id!=="grp-"+c);
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.c===c));
+  const t=document.getElementById("tab-"+c),ink=document.querySelector(".tab-ink");if(t&&ink){ink.style.width=t.offsetWidth+"px";ink.style.transform=`translateX(${t.offsetLeft}px)`}}
+const itemHTML=p=>`
     <button class="dest" role="radio" aria-checked="false" data-k="${p.id}">
       <span class="ico">${mark(p)}</span>
-      <span class="dt"><div class="t">${p.name}</div><div class="s">${p.cat==="edu"?"Education":"Work"} · ${p.sub.split(" · ")[0]}</div></span>
+      <span class="dt"><div class="t">${p.name}</div><div class="s">${p.sub.split(" · ")[0]}</div></span>
       <span class="yr">${p.yr}</span>
-    </button><div class="acc" data-for="${p.id}"><div><div class="acc-in"></div></div></div>`).join("")}</div>`;
+    </button><div class="acc" data-for="${p.id}"><div><div class="acc-in"></div></div></div>`;
+const GROUPS=[["work","Work experience"],["edu","Education"]];
+$("dests").innerHTML=`<div class="tabs" role="tablist">${GROUPS.map(([c,l])=>`<button class="tab" role="tab" id="tab-${c}" data-c="${c}" aria-selected="false" aria-controls="grp-${c}">${l}<span>${P.filter(p=>p.cat===c).length}</span></button>`).join("")}<i class="tab-ink"></i></div>`+GROUPS.map(([c,l])=>{const it=[...P].reverse().filter(p=>p.cat===c);
+  return `<div class="grp" id="grp-${c}" role="tabpanel" aria-labelledby="tab-${c}"><div class="label grp-l" id="lab-${c}">${l}<span>${it.length}</span></div>
+  <div class="dests timeline" role="radiogroup" aria-labelledby="lab-${c}">${it.map(itemHTML).join("")}</div></div>`}).join("");
 document.querySelector(".trip .row .val").textContent=P[0].name;
 document.querySelector(".trip .row em").textContent="Start · "+P[0].yr;
 
@@ -650,7 +679,7 @@ function select(k){
   $("prevBtn").disabled=!pv;$("nextBtn").disabled=!nx;
   $("prevBtn").innerHTML=`‹ Previous<small>${pv?pv.name:"Start of route"}</small>`;
   $("nextBtn").innerHTML=`Next ›<small>${nx?nx.name:"Current stop"}</small>`;
-  openAcc(k);const c=$("card");c.parentElement.classList.remove("hide");c.classList.add("swap");
+  setTab(d.cat);openAcc(k);const c=$("card");c.parentElement.classList.remove("hide");c.classList.add("swap");
   setTimeout(()=>{c.innerHTML=cardHTML(d);$("mcard").innerHTML=cardHTML(d);c.parentElement.scrollTop=0;document.querySelectorAll(".dest").forEach(b=>b.classList.toggle("passed",P.indexOf(byId[b.dataset.k])<=P.indexOf(d)));c.classList.remove("swap")},first?0:180);
   drawRoute(k);drawPins(k);focus(k);
 }
@@ -680,6 +709,8 @@ function deselect(){
   drawPins(null);
   drawRoute(last.id);fit();showDetail(false);
 }
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setTab(t.dataset.c)));
+setTab("work");
 document.querySelectorAll(".dest").forEach(b=>b.addEventListener("click",()=>{
   if(b.dataset.k===cur){const a=document.querySelector(`.acc[data-for="${cur}"]`);a.classList.toggle("open");return}
   select(b.dataset.k);showDetail(true)}));
