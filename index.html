@@ -337,6 +337,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .app.sheet-open .about-map,.app.sheet-open .controls{opacity:0;transform:translateY(-10px);pointer-events:none}
   .timeline .dest[aria-checked="true"]{position:sticky;top:-6px;z-index:6}
 }
+.facts{grid-template-columns:repeat(auto-fit,minmax(0,1fr))}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -457,7 +458,7 @@ const P=[
  {id:"gojek",cat:"work",name:"Gojek",logo:"gjk",yr:"2025–26",pin:[740,300],
   title:"Gojek",sub:"Senior Data Analyst · Transport Strategic Insight",when:"May 2025 – Aug 2026",chip:"Completed trip",
   desc:"Worked on ride-hailing demand and supply, pricing, experimentation, and marketplace strategy.",
-  facts:[["Role","Senior Data Analyst"],["Team","Strategy & Planning"],["Period","May 2025 – Aug 2026"]],
+  facts:[["Role","Senior Data Analyst"],["Period","May 2025 – Aug 2026"]],
   hl:["Analyzed millions of trip records (profitability by distance, pickup-to-dropoff ratio, pricing, waiting time vs. conversion). Findings went to the Head of Ride-Hailing and on to C-level.",
       "Designed campaign spending experiments in Tier 1 cities (~54% of national trips) with A/B tests, matching, and difference-in-differences.",
       "Built an airport demand forecast (LightGBM, XGBoost) at 12% MAPE. Pre-positioning drivers with it cut passenger waiting time by about 42%.",
@@ -465,7 +466,7 @@ const P=[
  {id:"katadata",cat:"work",name:"Katadata",logo:"kata",yr:"2023–25",pin:[600,420],
   title:"Katadata",sub:"Data & Analytics Specialist · Digital Strategy",when:"Dec 2023 – May 2025",chip:"Completed trip",
   desc:"Business and economics media and research firm, read mainly by policymakers, businesses, and think tanks.",
-  facts:[["Role","Data & Analytics"],["Team","Digital Strategy"],["Period","Dec 2023 – May 2025"]],
+  facts:[["Role","Data & Analytics"],["Period","Dec 2023 – May 2025"]],
   hl:["Ran analyses for 2025 annual planning, new product tracking, and competitor benchmarking on social media and web traffic.",
       "Built and managed Looker Studio dashboards that track short- and long-term targets.",
       "Built Airflow pipelines from source databases through Cloud Storage into BigQuery, and moved dashboards onto BigQuery."]},
@@ -475,14 +476,14 @@ const P=[
   hl:["Built and maintained dashboards across key business metrics, which supported hitting the 2023 year-end target.",
       "Researched ways to improve matchmaking between jobseekers and employers on the job platform.",
       "Handled ad-hoc research and hypothesis testing for stakeholders across the company."],
-  facts:[["Role","Data Analyst"],["Team","Growth & Monetization"],["Period","2022–23"]]},
+  facts:[["Role","Data Analyst"],["Period","2022–23"]]},
  {id:"bareksa",cat:"work",name:"Bareksa",logo:"bar",yr:"2022",pin:[320,560],
   title:"Bareksa",sub:"Junior Data Analyst · Product",when:"2022",chip:"Completed trip",
   desc:"Investment platform for mutual funds, gold, government bonds, and umrah savings. Covered government bonds and partnership products.",
   hl:["Dug into user onboarding and activation rates. The findings led to a redesign of the onboarding flow.",
       "Set up and maintained dashboards for several features and products.",
       "Wrote event tracking documentation for several features and products."],
-  facts:[["Role","Junior Data Analyst"],["Team","Product"],["Period","2022"]]},
+  facts:[["Role","Junior Data Analyst"],["Period","2022"]]},
  {id:"ruangguru",cat:"work",name:"Ruangguru",logo:"rg",yr:"2021–22",pin:[180,610],
   title:"Ruangguru",sub:"Business Operations Analyst",when:"2021 – 2022",chip:"Completed trip",
   desc:"Indonesia's largest education technology company. Worked on operations for Roboguru.",
