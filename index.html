@@ -270,6 +270,29 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hwl{fill:#9a7a2a}
 .dist{fill:#a8a8a3;font:700 11px var(--f);letter-spacing:.18em}
 .wl{fill:#6f97ae;font:italic 600 14px var(--f);letter-spacing:.06em}
+/* gojek-style map */
+.land{fill:#f5f5f2}
+.park{fill:#d6edd2}
+.r-min{fill:none;stroke:#d9dce1;stroke-width:1.6;stroke-linecap:round}
+.r-art{fill:none;stroke:#c3cad6;stroke-width:3.2;stroke-linecap:round}
+.river{fill:none;stroke:#b6dcf4;stroke-width:3;stroke-linecap:round}
+.admin{fill:none;stroke:#b3b6bd;stroke-width:1.4;stroke-dasharray:2 5;stroke-linecap:round}
+.water{fill:#b8dcf5}
+.r-hw-c{fill:none;stroke:#ffffff;stroke-width:8;stroke-linecap:round}
+.r-hw{fill:none;stroke:#9fb1cc;stroke-width:4.5;stroke-linecap:round}
+.r-route-c{fill:none;stroke:#ffffff;stroke-width:12;stroke-linecap:round}
+.r-route{fill:none;stroke:#d0d5dd;stroke-width:6;stroke-linecap:round}
+.rname{font:500 11px var(--f);fill:#5f6b7d;letter-spacing:.02em;paint-order:stroke;stroke:#f5f5f2;stroke-width:3px}
+.sh-b{fill:#ffffff;stroke:#5f6b7d;stroke-width:1.4}.sh-t{fill:#e0453a}.sh-n{font:700 10px var(--f);fill:#333}
+.apt-area{fill:#e4e8ee}.apt-c{fill:#3b82f6;stroke:#ffffff;stroke-width:3}.apt-p{fill:#ffffff}
+.city-l{font:800 34px var(--f);fill:#2a2c30;letter-spacing:-.02em;paint-order:stroke;stroke:#f5f5f2;stroke-width:5px}
+.city-m{font:700 24px var(--f);fill:#33363b;paint-order:stroke;stroke:#f5f5f2;stroke-width:4px}
+.kp{font:600 11px var(--f);fill:#6d7280;letter-spacing:.14em;paint-order:stroke;stroke:#f5f5f2;stroke-width:3px}
+.alt-l{fill:#33363b;paint-order:stroke;stroke:#ffffff;stroke-width:3px}
+.sh-i{fill:#2456b8;stroke:#ffffff;stroke-width:1.4}.sh-it{fill:#d6342b}.shield.i .sh-n{fill:#ffffff;font-size:9px}
+.sh-ca{fill:#1f7a3d;stroke:#ffffff;stroke-width:1.4}.shield.ca .sh-n{fill:#ffffff;font-size:9px}
+.park-l{font:600 12px var(--f);fill:#3f7a45;paint-order:stroke;stroke:#f5f5f2;stroke-width:3px}
+.water-l{font:italic 600 17px var(--f);fill:#4a83a8;letter-spacing:.04em}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -376,14 +399,14 @@ const NS="http://www.w3.org/2000/svg",$=id=>document.getElementById(id);
 const isMob=()=>$("frame").clientWidth<=820;
 const O=[480,540];
 const P=[
- {id:"tazkia",cat:"edu",name:"Universitas Tazkia",logo:"taz",yr:"2020",pin:[60,655],
+ {id:"tazkia",cat:"edu",name:"Universitas Tazkia",logo:"taz",yr:"2020",pin:[40,680],
   title:"Universitas Tazkia",sub:"Bachelor of Economics in Business Management",when:"Graduated Aug 2020",chip:"Completed trip",
   desc:"",facts:[["Level","Bachelor's"],["Country","Indonesia"],["GPA","3.58 / 4.00"]]},
- {id:"ucb",cat:"edu",name:"UC Berkeley",logo:"ucb",yr:"2026–27",pin:[900,207],
+ {id:"ucb",cat:"edu",name:"UC Berkeley",logo:"ucb",yr:"2026–27",pin:[900,230],
   title:"University of California, Berkeley",sub:"Master of Computational Social Science",when:"Expected May 2027",chip:"Current trip",
   desc:"Graduate study in computational methods, statistics, and social science research.",
   facts:[["Level","Master's"],["City","Berkeley, CA"],["Expected","May 2027"]]},
- {id:"gojek",cat:"work",name:"Gojek",logo:"gjk",yr:"2025–26",pin:[760,281],
+ {id:"gojek",cat:"work",name:"Gojek",logo:"gjk",yr:"2025–26",pin:[740,300],
   title:"Gojek",sub:"Senior Data Analyst · Transport Strategic Insight",when:"May 2025 – Aug 2026",chip:"Completed trip",
   desc:"Strategy & Planning. Worked on ride-hailing demand and supply, pricing, experimentation, and marketplace strategy.",
   facts:[["Role","Senior Data Analyst"],["Team","Strategy & Planning"],["Country","Indonesia"]],
@@ -391,28 +414,28 @@ const P=[
       "Designed campaign spending experiments in Tier 1 cities (~54% of national trips) with A/B tests, matching, and difference-in-differences.",
       "Built an airport demand forecast (LightGBM, XGBoost) at 12% MAPE. Pre-positioning drivers with it cut passenger waiting time by about 42%.",
       "Ran pricing elasticity analysis and built Airflow ETL pipelines in MaxCompute for weekly marketplace health dashboards."]},
- {id:"katadata",cat:"work",name:"Katadata",logo:"kata",yr:"2023–25",pin:[620,356],
+ {id:"katadata",cat:"work",name:"Katadata",logo:"kata",yr:"2023–25",pin:[600,420],
   title:"Katadata",sub:"Data & Analytics Specialist · Digital Strategy",when:"Dec 2023 – May 2025",chip:"Completed trip",
   desc:"Business and economics media and research firm, read mainly by policymakers, businesses, and think tanks.",
   facts:[["Role","Data & Analytics"],["Team","Digital Strategy"],["City","Jakarta"]],
   hl:["Ran analyses for 2025 annual planning, new product tracking, and competitor benchmarking on social media and web traffic.",
       "Built and managed Looker Studio dashboards that track short- and long-term targets.",
       "Built Airflow pipelines from source databases through Cloud Storage into BigQuery, and moved dashboards onto BigQuery."]},
- {id:"pintarnya",cat:"work",name:"Pintarnya",logo:"pin",yr:"2022–23",pin:[480,431],
+ {id:"pintarnya",cat:"work",name:"Pintarnya",logo:"pin",yr:"2022–23",pin:[430,450],
   title:"Pintarnya",sub:"Data Analyst · Growth & Monetization",when:"2022 – 2023",chip:"Completed trip",
   desc:"Indonesian startup opening up job and financial opportunities for blue-collar workers.",
   hl:["Built and maintained dashboards across key business metrics, which supported hitting the 2023 year-end target.",
       "Researched ways to improve matchmaking between jobseekers and employers on the job platform.",
       "Handled ad-hoc research and hypothesis testing for stakeholders across the company."],
   facts:[["Role","Data Analyst"],["Team","Growth & Monetization"],["Period","2022–23"]]},
- {id:"bareksa",cat:"work",name:"Bareksa",logo:"bar",yr:"2022",pin:[340,505],
+ {id:"bareksa",cat:"work",name:"Bareksa",logo:"bar",yr:"2022",pin:[320,560],
   title:"Bareksa",sub:"Junior Data Analyst · Product",when:"2022",chip:"Completed trip",
   desc:"Investment platform for mutual funds, gold, government bonds, and umrah savings. Covered government bonds and partnership products.",
   hl:["Dug into user onboarding and activation rates. The findings led to a redesign of the onboarding flow.",
       "Set up and maintained dashboards for several features and products.",
       "Wrote event tracking documentation for several features and products."],
   facts:[["Role","Junior Data Analyst"],["Team","Product"],["Focus","Bonds & partnerships"]]},
- {id:"ruangguru",cat:"work",name:"Ruangguru",logo:"rg",yr:"2021–22",pin:[200,580],
+ {id:"ruangguru",cat:"work",name:"Ruangguru",logo:"rg",yr:"2021–22",pin:[180,610],
   title:"Ruangguru",sub:"Business Operations Analyst",when:"2021 – 2022",chip:"Completed trip",
   desc:"Indonesia's largest education technology company. Worked on operations for Roboguru.",
   hl:["Built the dashboard tracking Roboguru operations end to end (Google Data Studio, BigQuery, Google Sheets).",
@@ -437,38 +460,52 @@ $("dests").innerHTML=`<div class="label" id="lab-r">My route<span>${P.length} st
     </button><div class="acc" data-for="${p.id}"><div><div class="acc-in"></div></div></div>`).join("")}</div>`;
 document.querySelector(".trip .row .val").textContent=P[0].name;
 document.querySelector(".trip .row em").textContent="Start · "+P[0].yr;
-/* base map */
+
+function catmull(pts){let d=`M${pts[0][0]} ${pts[0][1]}`;for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
+  const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];d+=` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0]} ${p2[1]}`}return d}
+/* base map: Gojek / Google-style */
 const base=$("base");
-const rnd=(s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296})(20261012);
-el("rect",{x:-600,y:-600,width:2200,height:2000,class:"land"},base);
-const xs=[],ys=[];for(let x=-460;x<1500;x+=110+Math.round(rnd()*60))xs.push(x);for(let y=-460;y<1300;y+=95+Math.round(rnd()*55))ys.push(y);
-const majX=new Set(xs.filter((_,i)=>i%4===2)),majY=new Set(ys.filter((_,i)=>i%4===1));
-for(let i=0;i<xs.length-1;i++)for(let j=0;j<ys.length-1;j++){
-  const bx=xs[i]+7,by=ys[j]+7,bw=xs[i+1]-xs[i]-14,bh=ys[j+1]-ys[j]-14;
-  if(rnd()<.07){el("rect",{x:bx,y:by,width:bw,height:bh,rx:6,class:"park"},base);
-    for(let t=0;t<7;t++)el("circle",{cx:bx+10+rnd()*(bw-20),cy:by+10+rnd()*(bh-20),r:4+rnd()*4,class:"tree"},base);continue}
-  el("rect",{x:bx,y:by,width:bw,height:bh,rx:4,class:"blk"},base);
-  const cols=bw>120?3:2,rows=bh>100?3:2,cw=(bw-6)/cols,ch=(bh-6)/rows;
-  for(let c=0;c<cols;c++)for(let r=0;r<rows;r++){if(rnd()<.18)continue;
-    const ix=rnd()*4,iy=rnd()*4;el("rect",{x:bx+3+c*cw+2+ix,y:by+3+r*ch+2+iy,width:cw-4-ix-rnd()*5,height:ch-4-iy-rnd()*5,rx:1.5,class:"bld"},base)}
-}
-const road=(d,cls)=>{el("path",{d,class:"rc "+cls},base);el("path",{d,class:"rd "+cls},base)};
-xs.forEach(x=>road(`M${x} -600 V1400`,majX.has(x)?"maj":"min"));
-ys.forEach(y=>road(`M-600 ${y} H1600`,majY.has(y)?"maj":"min"));
-el("path",{class:"water",d:"M980 -600 C 930 0, 1060 190, 1600 270 L1600 -600 Z"},base);
-el("path",{class:"water",d:"M-600 760 C -20 720, 70 840, 110 1400 L -600 1400 Z"},base);
-el("path",{class:"shore",d:"M980 -600 C 930 0, 1060 190, 1600 270"},base);
-el("path",{class:"shore",d:"M-600 760 C -20 720, 70 840, 110 1400"},base);
-road("M-600 1006 L1600 -167","ave");
-road("M-600 140 C 200 60, 420 380, 760 620 S 1300 1000, 1600 960","hw");
-const lab=(t,x,y,cls,rot=0)=>{el("text",{x,y,class:cls,"text-anchor":"middle",transform:rot?`rotate(${rot} ${x} ${y})`:""},base).textContent=t};
-const mx=[...majX],my=[...majY];
-if(my[1]!==undefined)lab("Central Ave",250,my[1]-6,"st");
-if(my[2]!==undefined)lab("Harbor Blvd",600,my[2]-6,"st");
-if(mx[1]!==undefined)lab("Station Rd",mx[1]-6,820,"st",-90);
-lab("Route 1",120,96,"st hwl",-6);
-lab("DOWNTOWN",330,330,"dist");lab("NORTH SIDE",760,90,"dist");lab("THE HILLS",960,560,"dist");lab("OLD TOWN",150,470,"dist");
-lab("Bay",1190,40,"wl");lab("Lake",-120,1000,"wl");
+const rnd=(s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296})(1012);
+const smooth=pts=>{let d=`M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;for(let i=1;i<pts.length-1;i++){const m=[(pts[i][0]+pts[i+1][0])/2,(pts[i][1]+pts[i+1][1])/2];d+=` Q${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`}const l=pts[pts.length-1];return d+` L${l[0].toFixed(1)} ${l[1].toFixed(1)}`};
+const walk=(x,y,ang,steps,len,jit)=>{const p=[[x,y]];for(let i=0;i<steps;i++){ang+=(rnd()-.5)*jit;x+=Math.cos(ang)*len*(.7+rnd()*.6);y+=Math.sin(ang)*len*(.7+rnd()*.6);p.push([x,y])}return p};
+el("rect",{x:-700,y:-700,width:2400,height:2200,class:"land"},base);
+// parks
+for(let i=0;i<16;i++){const cx=-500+rnd()*1900,cy=-300+rnd()*1500,r=30+rnd()*70,pts=[];for(let a=0;a<10;a++){const t=a/10*Math.PI*2,rr=r*(.6+rnd()*.6);pts.push([cx+Math.cos(t)*rr,cy+Math.sin(t)*rr*.8])}pts.push(pts[0]);el("path",{d:smooth(pts)+"Z",class:"park"},base)}
+[[1150,-20,150],[-90,560,60]].forEach(([cx,cy,r])=>{const pts=[];for(let a=0;a<12;a++){const t=a/12*Math.PI*2,rr=r*(.75+rnd()*.4);pts.push([cx+Math.cos(t)*rr,cy+Math.sin(t)*rr*.7])}pts.push(pts[0]);el("path",{d:smooth(pts)+"Z",class:"park"},base)});
+// minor road web
+for(let i=0;i<170;i++){const p=walk(-600+rnd()*2100,-500+rnd()*1800,rnd()*Math.PI*2,6+Math.floor(rnd()*12),45,.9);el("path",{d:smooth(p),class:"r-min"},base)}
+// rivers
+[[-600,420,.05],[300,1300,-1.4],[1500,800,3.3]].forEach(([x,y,a])=>el("path",{d:smooth(walk(x,y,a,26,60,.5)),class:"river"},base));
+// admin boundaries
+for(let i=0;i<6;i++)el("path",{d:smooth(walk(-600+rnd()*2000,-400+rnd()*1600,rnd()*6.28,18,55,.7)),class:"admin"},base);
+// arterials
+const art=[];for(let i=0;i<14;i++){const horiz=i%2,p=horiz?walk(-700,-300+i*110,(rnd()-.5)*.4,30,70,.18):walk(-500+i*150,-700,Math.PI/2+(rnd()-.5)*.4,30,70,.18);art.push(p);el("path",{d:smooth(p),class:"r-art"},base)}
+// San Francisco Bay on the west, with shoreline
+const coast=[];for(let y=-700;y<=1500;y+=60)coast.push([-230+Math.sin(y/190)*50+Math.sin(y/61)*14+(rnd()-.5)*10,y]);
+el("path",{d:smooth(coast)+" L-900 1500 L-900 -700 Z",class:"water"},base);
+// freeways: I-80 along the shore, I-580 / CA-24 inland
+const i80=coast.map(([x,y])=>[x+70,y]),i580=walk(-150,1150,-.35,24,80,.12),ca24=walk(700,1400,-1.35,22,80,.16);
+[i80,i580,ca24].forEach(p=>{el("path",{d:smooth(p),class:"r-hw-c"},base);el("path",{d:smooth(p),class:"r-hw"},base)});
+el("path",{d:smooth(i80),id:"hwName",fill:"none"},base);
+{const t=el("text",{class:"rname"},base);el("textPath",{href:"#hwName",startOffset:"40%"},t).textContent="Eastshore Fwy"}
+const shield=(x,y,n,kind)=>{const g=el("g",{class:"shield "+kind,transform:`translate(${x},${y})`},base);
+  if(kind==="ca"){el("path",{d:"M-12 -10 Q0 -14 12 -10 L10 6 Q0 14 -10 6 Z",class:"sh-ca"},g)}
+  else{el("path",{d:"M-12 -10 L12 -10 L13 3 Q0 15 -13 3 Z",class:"sh-i"},g);el("path",{d:"M-12 -10 L12 -10 L12.4 -5 L-12.4 -5 Z",class:"sh-it"},g)}
+  el("text",{y:kind==="ca"?3:5,"text-anchor":"middle",class:"sh-n"},g).textContent=n};
+shield(...i80[9],"80","i");shield(...i80[24],"80","i");shield(...i580[9],"580","i");shield(...ca24[11],"24","ca");
+// named avenues (on the arterial grid)
+const nameRoad=(p,id,txt,off)=>{el("path",{d:smooth(p),id,fill:"none"},base);const t=el("text",{class:"rname"},base);el("textPath",{href:"#"+id,startOffset:off},t).textContent=txt};
+nameRoad(art[1],"rdUni","University Ave","30%");nameRoad(art[5],"rdAsh","Ashby Ave","42%");
+nameRoad(art[6],"rdSha","Shattuck Ave","22%");nameRoad(art[8],"rdTel","Telegraph Ave","55%");nameRoad(art[2],"rdSP","San Pablo Ave","34%");
+// route road (stops sit on it)
+const ext=[[-200,760],...P.map(p=>p.pin),[1150,150]];
+el("path",{d:catmull(ext),class:"r-route-c"},base);el("path",{d:catmull(ext),class:"r-route"},base);
+// labels
+const lab=(t,x,y,cls)=>{el("text",{x,y,class:cls,"text-anchor":"middle"},base).textContent=t};
+lab("Berkeley",560,90,"city-l");lab("Oakland",560,980,"city-l");lab("Albany",120,-260,"city-m");lab("Emeryville",40,860,"city-m");
+lab("NORTH BERKELEY",520,-60,"kp");lab("DOWNTOWN",760,180,"kp");lab("SOUTHSIDE",840,400,"kp");lab("ELMWOOD",720,560,"kp");
+lab("CLAREMONT",1060,640,"kp");lab("WEST BERKELEY",120,420,"kp");lab("ROCKRIDGE",900,820,"kp");lab("THOUSAND OAKS",280,-180,"kp");
+lab("Tilden Park",1150,-60,"park-l");lab("Aquatic Park",-60,560,"park-l");lab("San Francisco Bay",-470,300,"water-l");
 
 /* pins */
 const pins=$("pins");
@@ -555,12 +592,12 @@ function zoom(f){const[x,y,w,h]=vb,nw=w*f,nh=h*f;setVB([x+(w-nw)/2,y+(h-nh)/2,nw
 
 /* route */
 let carRaf;
-const pathOf=a=>"M"+a.map(p=>p.pin.join(" ")).join(" L");
+const pathOf=a=>catmull(a.map(p=>p.pin));
 $("ghost").setAttribute("d",pathOf(P));
 const ghost=$("ghost"),route=$("route"),casing=$("casing"),car=$("car");
 [route,casing].forEach(p=>p.setAttribute("d",pathOf(P)));
 const TOT=ghost.getTotalLength();
-const stopD=(()=>{let d=0;return P.map((p,i)=>{if(i)d+=Math.hypot(p.pin[0]-P[i-1].pin[0],p.pin[1]-P[i-1].pin[1]);return d})})();
+const stopD=P.map((p,i)=>{if(!i)return 0;const t=document.createElementNS(NS,"path");t.setAttribute("d",pathOf(P.slice(0,i+1)));$("svg").appendChild(t);const l=t.getTotalLength();t.remove();return l});
 let drawn=0;
 function moveMarker(d){
   const mk=document.getElementById("routeMarker");if(!mk)return;
