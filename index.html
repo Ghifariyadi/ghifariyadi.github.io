@@ -349,6 +349,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .about-map{left:12px;right:12px;max-width:none}
   .controls{top:calc(122px + env(safe-area-inset-top,0px)) !important}
 }
+.card{max-height:calc(100% - 130px)}
+/* coach hint bubble */
+.frame{position:relative}
+.coach{position:absolute;z-index:20;background:#111;color:#fff;font-size:13px;font-weight:600;padding:9px 13px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.coach.on{opacity:1;transform:none;animation:cbob 2.2s ease-in-out .4s infinite}
+@keyframes cbob{50%{transform:translateY(-3px)}}
+.coach::after{content:"";position:absolute;width:10px;height:10px;background:#111;transform:rotate(45deg)}
+.coach.right::after{left:-4px;top:calc(50% - 5px)}
+.coach.above::after{left:calc(50% - 5px);bottom:-4px}
+.coach.below::after{left:calc(50% - 5px);top:-4px}
+.coach .bob{display:inline-block;margin-left:4px;animation:arr 1s ease-in-out infinite}
+@keyframes arr{50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.coach.on,.coach .bob{animation:none}}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -763,7 +776,7 @@ $("zin").onclick=()=>zoom(.75);$("zout").onclick=()=>zoom(1.33);$("recenter").on
 
 
 const collapsedY=()=>rail.offsetHeight-360;
-function setSheet(o){open=o;document.querySelector(".app").classList.toggle("sheet-open",o&&isMob());rail.style.setProperty("--sheet-y",o?"0px":collapsedY()+"px")}
+function setSheet(o){open=o;document.dispatchEvent(new CustomEvent("sheetchange",{detail:o}));document.querySelector(".app").classList.toggle("sheet-open",o&&isMob());rail.style.setProperty("--sheet-y",o?"0px":collapsedY()+"px")}
 function openSheet(){if(isMob()&&!open)setSheet(true)}
 $("handle").onclick=()=>setSheet(!open);
 let sy=null,b0=0,moved=false;
@@ -775,6 +788,30 @@ addEventListener("resize",relayout);
 function mode(app){$("stage").classList.toggle("appmode",app);$("mWeb").setAttribute("aria-pressed",!app);$("mApp").setAttribute("aria-pressed",app);open=false;setTimeout(relayout,380)}
 $("mWeb").onclick=()=>mode(false);$("mApp").onclick=()=>mode(true);
 
+
+/* coach hints */
+const coachEl=document.createElement("div");coachEl.className="coach";coachEl.hidden=true;coachEl.setAttribute("role","status");
+document.getElementById("frame").appendChild(coachEl);
+let coachT=0,coachDone=false;try{coachDone=localStorage.getItem("coachDone")==="1"}catch(e){}
+function coach(target,text,place,ms){if(coachDone||!target)return;clearTimeout(coachT);
+  const fr=$("frame").getBoundingClientRect(),r=target.getBoundingClientRect();
+  coachEl.innerHTML=text;coachEl.className="coach "+place;coachEl.hidden=false;
+  const cw=coachEl.offsetWidth,ch=coachEl.offsetHeight;let x,y;
+  if(place==="right"){x=r.right-fr.left+12;y=r.top-fr.top+r.height/2-ch/2}
+  else if(place==="above"){x=r.left-fr.left+r.width/2-cw/2;y=r.top-fr.top-ch-14}
+  else{x=r.left-fr.left+r.width/2-cw/2;y=r.bottom-fr.top+12}
+  x=Math.max(8,Math.min(fr.width-cw-8,x));coachEl.style.left=x+"px";coachEl.style.top=y+"px";
+  requestAnimationFrame(()=>coachEl.classList.add("on"));coachT=setTimeout(hideCoach,ms||7000)}
+function hideCoach(){coachEl.classList.remove("on");clearTimeout(coachT);setTimeout(()=>{if(!coachEl.classList.contains("on"))coachEl.hidden=true},300)}
+function finishCoach(){coachDone=true;hideCoach();try{localStorage.setItem("coachDone","1")}catch(e){}}
+const firstOther=()=>[...document.querySelectorAll(".grp:not([hidden]) .dest")].find(b=>b.getAttribute("aria-checked")!=="true")||document.querySelector(".grp:not([hidden]) .dest");
+document.addEventListener("click",e=>{if(e.target.closest(".dest,.pin-alt,.pin-d,#prevBtn,#nextBtn"))finishCoach()},true);
+document.addEventListener("sheetchange",e=>{if(!isMob()||coachDone)return;if(e.detail){hideCoach();setTimeout(()=>{const br=$("sheetBody").getBoundingClientRect(),vis=[...document.querySelectorAll(".grp:not([hidden]) .dest")].filter(b=>{const r=b.getBoundingClientRect();return r.top>br.top+40&&r.bottom<br.bottom-10});
+    const t=vis.find(b=>b.getAttribute("aria-checked")!=="true")||vis[0];coach(t,"Tap a stop to see the details","above",5000)},500)}});
+function startCoach(){if(coachDone)return;
+  if(isMob())coach($("handle"),'Swipe up to see my experience <span class="bob">↑</span>',"above",8000);
+  else coach(firstOther(),"Click a stop to see the details","right",8000)}
+setTimeout(startCoach,800);
 if(isMob())setSheet(false);
 select("ucb");
 })();
