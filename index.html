@@ -365,6 +365,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* detail card hangs from the top, under the summary card */
 .card{top:112px;bottom:auto;max-height:calc(100% - 132px)}
 .card{transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1)}
+.intro{margin:6px 0 10px;font-size:14.5px;line-height:1.55;color:var(--ink-2);max-width:42ch;text-wrap:pretty}
+@container app (max-width:820px){.intro{font-size:14px;margin:4px 0 8px}}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -418,6 +420,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       <div class="listv">
       <div class="greet">
         <small>Hi, I'm Ghif</small>
+        <p class="intro">Data analyst with 5+ years across ride-hailing, media, fintech, and edtech. Most recently on Gojek&rsquo;s Transport Strategy &amp; Planning team, working on supply and demand, incentives, pricing, and forecasting in Indonesia&rsquo;s Tier 1 cities and Singapore.</p>
         <h1>Where I’ve been</h1>
       </div>
 
@@ -762,7 +765,7 @@ function deselect(){
   drawPins(null);
   drawRoute(last.id);fit();showDetail(false);
 }
-document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setTab(t.dataset.c)));
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{setTab(t.dataset.c);if(cur&&byId[cur].cat!==t.dataset.c)deselect()}));
 setTab("work");
 document.querySelectorAll(".dest").forEach(b=>b.addEventListener("click",()=>{
   if(b.dataset.k===cur){const a=document.querySelector(`.acc[data-for="${cur}"]`);a.classList.toggle("open");return}
@@ -815,7 +818,7 @@ function coach(target,text,place,ms){if(coachDone||!target)return;clearTimeout(c
 function hideCoach(){coachEl.classList.remove("on");clearTimeout(coachT);setTimeout(()=>{if(!coachEl.classList.contains("on"))coachEl.hidden=true},300)}
 function finishCoach(){coachDone=true;hideCoach();try{localStorage.setItem("coachDone","1")}catch(e){}}
 const firstOther=()=>[...document.querySelectorAll(".grp:not([hidden]) .dest")].find(b=>b.getAttribute("aria-checked")!=="true")||document.querySelector(".grp:not([hidden]) .dest");
-document.addEventListener("click",e=>{if(e.target.closest(".dest,.pin-alt,.pin-d,#prevBtn,#nextBtn"))finishCoach()},true);
+document.addEventListener("click",e=>{if(e.target.closest(".dest,.pin-alt,.pin-d,#prevBtn,#nextBtn,.tab"))finishCoach()},true);
 document.addEventListener("sheetchange",e=>{if(!isMob()||coachDone)return;if(e.detail){hideCoach();setTimeout(()=>{const br=$("sheetBody").getBoundingClientRect(),vis=[...document.querySelectorAll(".grp:not([hidden]) .dest")].filter(b=>{const r=b.getBoundingClientRect();return r.top>br.top+40&&r.bottom<br.bottom-10});
     const t=vis.find(b=>b.getAttribute("aria-checked")!=="true")||vis[0];coach(t,"Tap a stop to see the details","above",5000)},500)}});
 function startCoach(){if(coachDone)return;
