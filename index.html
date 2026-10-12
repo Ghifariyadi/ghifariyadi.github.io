@@ -362,6 +362,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .coach .bob{display:inline-block;margin-left:4px;animation:arr 1s ease-in-out infinite}
 @keyframes arr{50%{transform:translateY(-4px)}}
 @media (prefers-reduced-motion:reduce){.coach.on,.coach .bob{animation:none}}
+/* detail card hangs from the top, under the summary card */
+.card{top:112px;bottom:auto;max-height:calc(100% - 132px)}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
