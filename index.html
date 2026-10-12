@@ -347,7 +347,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* phone: card full width, controls below it */
 @container app (max-width:820px){
   .about-map{left:12px;right:12px;max-width:none}
-  .controls{top:calc(122px + env(safe-area-inset-top,0px)) !important}
+  .controls{top:calc(144px + env(safe-area-inset-top,0px)) !important}
 }
 .card{max-height:calc(100% - 130px)}
 /* coach hint bubble */
@@ -369,6 +369,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @container app (max-width:820px){.intro{font-size:14px;margin:4px 0 8px}}
 .greet small{font-size:17px;font-weight:700;color:var(--ink)}
 @container app (max-width:820px){.greet small{font-size:16px}}
+.about-map .ab-1 b{font-size:16px}
+.intro{margin-top:0}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -421,9 +423,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <div class="sheet-body" id="sheetBody">
       <div class="listv">
       <div class="greet">
-        <small>Hi, I'm Ghif</small>
         <p class="intro">Data analyst with 5+ years across ride-hailing, media, fintech, and edtech. Most recently on Gojek&rsquo;s Transport Strategy &amp; Planning team, working on supply and demand, incentives, pricing, and forecasting in Indonesia&rsquo;s Tier 1 cities and Singapore.</p>
-        <h1>Where I’ve been</h1>
       </div>
 
       <div class="trip" aria-hidden="true">
@@ -454,7 +454,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       <circle id="car" class="car" r="8" cx="-50" cy="-50"/>
     </svg>
     <div class="about about-map">
-        <p class="ab-1"><b>5 years</b> in analytics</p>
+        <p class="ab-1"><b>Hi, I&rsquo;m Ghif</b></p>
+        <p><b>5 years</b> in analytics</p>
         <p>Worked on <span class="slot" data-items="Campaign &amp; initiative experiments|Supply–demand analysis|Demand forecasting models|Price sensitivity by segment|Source-of-truth dashboards|ETL pipelines"></span></p>
       </div>
     <div class="legend"><b></b><span id="legendTxt">Route to UC Berkeley</span></div>
