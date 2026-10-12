@@ -364,6 +364,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.coach.on,.coach .bob{animation:none}}
 /* detail card hangs from the top, under the summary card */
 .card{top:112px;bottom:auto;max-height:calc(100% - 132px)}
+.card{transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1)}
 /* focused stop */
 .dest{transition:background .25s,color .25s,opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
 .timeline:has(.dest[aria-checked="true"]) .dest:not([aria-checked="true"]){opacity:.8}
@@ -410,7 +411,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <aside class="rail" id="rail" aria-label="Destinations">
     <button class="handle" id="handle" aria-label="Expand or collapse panel"><span></span></button>
     <div class="top">
-      <div class="brand"><i></i>ghifari</div>
+      <div class="brand"><i></i>Ghifariyadi, M</div>
       <div class="avatar" aria-hidden="true">G</div>
     </div>
     <div class="sheet-body" id="sheetBody">
@@ -732,7 +733,7 @@ function select(k){
   $("prevBtn").innerHTML=`‹ Previous<small>${pv?pv.name:"Start of route"}</small>`;
   $("nextBtn").innerHTML=`Next ›<small>${nx?nx.name:"Current stop"}</small>`;
   setTab(d.cat);openAcc(k);const c=$("card");c.parentElement.classList.remove("hide");c.classList.add("swap");
-  setTimeout(()=>{c.innerHTML=cardHTML(d);$("mcard").innerHTML=cardHTML(d);c.parentElement.scrollTop=0;document.querySelectorAll(".dest").forEach(b=>b.classList.toggle("passed",P.indexOf(byId[b.dataset.k])<=P.indexOf(d)));c.classList.remove("swap")},first?0:180);
+  setTimeout(()=>{c.innerHTML=cardHTML(d);$("mcard").innerHTML=cardHTML(d);c.parentElement.scrollTop=0;placeCard();document.querySelectorAll(".dest").forEach(b=>b.classList.toggle("passed",P.indexOf(byId[b.dataset.k])<=P.indexOf(d)));c.classList.remove("swap")},first?0:180);
   drawRoute(k);drawPins(k);focus(k);
 }
 function showDetail(on){rail.classList.remove("detail");if(!on||!isMob())return;openSheet();
@@ -767,6 +768,13 @@ document.querySelectorAll(".dest").forEach(b=>b.addEventListener("click",()=>{
   if(b.dataset.k===cur){const a=document.querySelector(`.acc[data-for="${cur}"]`);a.classList.toggle("open");return}
   select(b.dataset.k);showDetail(true)}));
 $("back").onclick=()=>showDetail(false);
+function placeCard(){const c=document.querySelector(".card");if(!c)return;if(isMob()){c.style.top="";return}
+  const b=document.querySelector('.grp:not([hidden]) .dest[aria-checked="true"]'),m=document.querySelector(".map").getBoundingClientRect();
+  let t=112;if(b){const r=b.getBoundingClientRect();t=r.top-m.top}
+  t=Math.max(112,Math.min(t,m.height-c.offsetHeight-20));c.style.top=Math.round(t)+"px"}
+$("sheetBody").addEventListener("scroll",()=>requestAnimationFrame(placeCard),{passive:true});
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setTimeout(placeCard,30)));
+addEventListener("resize",()=>setTimeout(placeCard,50));
 $("sheetBody").addEventListener("scroll",()=>{if(!sfRaf)sfRaf=requestAnimationFrame(()=>{sfRaf=0;scrollFollow()})},{passive:true});
 document.querySelectorAll(".dest").forEach(b=>{
   b.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse"&&!isMob())glideTo(stopD[P.indexOf(byId[b.dataset.k])])});
@@ -812,7 +820,7 @@ document.addEventListener("sheetchange",e=>{if(!isMob()||coachDone)return;if(e.d
     const t=vis.find(b=>b.getAttribute("aria-checked")!=="true")||vis[0];coach(t,"Tap a stop to see the details","above",5000)},500)}});
 function startCoach(){if(coachDone)return;
   if(isMob())coach($("handle"),'Swipe up to see my experience <span class="bob">↑</span>',"above",8000);
-  else coach(firstOther(),"Click a stop to see the details","right",8000)}
+  else coach(firstOther(),"Click a stop to see the details","below",8000)}
 setTimeout(startCoach,800);
 if(isMob())setSheet(false);
 select("ucb");
