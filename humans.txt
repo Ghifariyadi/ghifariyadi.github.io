@@ -1,0 +1,9 @@
+/* TEAM */
+Owner: Muhammad Ghifariyadi
+Site: https://ghifariyadi.github.io
+LinkedIn: https://www.linkedin.com/in/ghifariyadi
+
+/* SITE */
+Last update: 2026/10/22
+Standards: HTML5, CSS3, SVG
+Hosting: GitHub Pages
