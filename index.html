@@ -244,6 +244,33 @@ body.scrolled .fnav{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 @media (min-width:761px){.hero{padding-top:64px}.sub{margin-top:22px}.btn{margin-top:30px}.frame{margin-top:44px}}
 .frame{background:rgba(6,8,12,.86);border-color:rgba(255,255,255,.09);box-shadow:0 30px 80px -20px rgba(0,0,0,.55)}
 .tabs{background:rgba(255,255,255,.06)}
+
+/* ===== heboh-luxury motion layer ===== */
+html{scroll-behavior:auto!important}
+body.hb .wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+body.hb .wm>span{display:inline-block;transform:translate3d(0,105%,0);will-change:transform}
+body.hb .split.on .wm>span{transform:none;transition:transform 1.1s var(--lux);transition-delay:var(--d)}
+body.hb .frame.ready{transition:transform .9s var(--lux)}
+body.hb .hc{will-change:transform,opacity}
+.spot{position:absolute;left:0;top:0;width:720px;height:720px;margin:-360px 0 0 -360px;border-radius:50%;pointer-events:none;z-index:-1;
+ background:radial-gradient(closest-side,rgba(140,240,232,.22),rgba(140,240,232,.07) 55%,transparent);mix-blend-mode:screen;opacity:0;transition:opacity 1.2s var(--lux);will-change:transform}
+.hero:hover .spot{opacity:1}
+.frame,.ec,.st{position:relative}
+.sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;opacity:0;transition:opacity .8s var(--lux);
+ background:radial-gradient(420px circle at var(--sx,50%) var(--sy,50%),rgba(255,255,255,.10),rgba(255,255,255,.03) 40%,transparent 65%);mix-blend-mode:screen}
+.tilt:hover .sheen{opacity:1}
+body.hb .rv{opacity:0;transform:perspective(1200px) translate3d(0,80px,0) rotateX(14deg) scale(.95);transform-origin:50% 0;transition:opacity 1.2s var(--lux),transform 1.5s var(--lux);transition-delay:var(--d,0s)}
+body.hb .rv.on{opacity:1;transform:none}
+body.hb h2.rv{opacity:1;transform:none}
+body.hb .ec.tilt,body.hb .st.tilt{transition:opacity 1.2s var(--lux),transform .9s var(--lux),border-color .3s}
+body.hb .fbig .ch{transform:translate3d(0,110%,0)}
+body.hb .fbig .lw{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
+body.hb .fbig.on .ch{transform:none;transition:transform 1.2s var(--lux);transition-delay:var(--d)}
+.prog{position:fixed;left:0;top:0;right:0;height:2px;z-index:60;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#0e6e93,#62e6dc 60%,#e6fffb);pointer-events:none;box-shadow:0 0 12px rgba(98,230,220,.6)}
+body.hascur,body.hascur a,body.hascur button,body.hascur summary{cursor:none}
+.mag{transition:transform .6s var(--lux)!important}
+body.hb main.wrap,body.hb .hero{overflow-x:clip}
+html:has(body.hb){overflow-x:clip}
 </style></head><body>
 <nav><div class="nav"><a class="brand" href="#top">Ghifariyadi, M</a>
 <div class="links"><a href="#xp">Experience</a><a href="#education">Education</a><a href="#work">Worked on</a><a href="#faq">FAQ</a></div>
@@ -535,4 +562,57 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   o.u.c.forEach((u,i)=>g.uniform3fv(u,colors[i]));g.drawArrays(g.TRIANGLES,0,3);o.cv.classList.add("on")}
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
-</script></body></html>
+</script><script>
+(()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+const B=document.body,fine=matchMedia("(hover:hover) and (pointer:fine)").matches,L=(a,b,t)=>a+(b-a)*t;
+B.classList.add("hb");
+/* split helpers */
+const splitChars=(el,base=0,step=.028)=>{let i=0;const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const f=document.createDocumentFragment();[...c.textContent].forEach(ch=>{const s=document.createElement("span");s.className="ch";s.innerHTML=ch===" "?"&nbsp;":ch;s.style.setProperty("--d",(base+i++*step).toFixed(3)+"s");f.appendChild(s)});c.replaceWith(f)}else walk(c)})};walk(el)};
+const splitWords=(el,base=0,step=.012)=>{const w=el.textContent.trim().split(/\s+/);el.innerHTML=w.map((x,i)=>`<span class="wm"><span style="--d:${(base+i*step).toFixed(3)}s">${x}</span></span>`).join(" ")};
+const h1=document.getElementById("h1");
+const sub=document.querySelector(".sub");
+document.querySelectorAll("main h2").forEach(h=>{h.classList.add("split");splitWords(h,0,.06)});
+const fbig=document.querySelector(".fbig");if(fbig){const ws=fbig.textContent.trim().split(/\s+/);let k=0;
+ fbig.innerHTML=ws.map(w=>`<span class="lw">${[...w].map(c=>`<span class="ch" style="--d:${(k++*.03).toFixed(3)}s">${c}</span>`).join("")}</span>`).join(" ")}
+/* wrap hero copy for parallax, add spotlight */
+const hero=document.getElementById("top"),hc=document.createElement("div");hc.className="hc";
+h1.before(hc);hc.append(h1,sub,document.querySelector(".cta"));
+const spot=document.createElement("div");spot.className="spot";hero.appendChild(spot);
+const prog=document.createElement("div");prog.className="prog";B.appendChild(prog);
+/* card becomes tiltable once its entrance finishes */
+const frame=document.getElementById("xp");const ready=()=>{if(frame.classList.contains("ready"))return;frame.classList.remove("in");frame.style.opacity=1;frame.classList.add("ready")};
+frame.addEventListener("animationend",ready);setTimeout(ready,3200);
+/* reveal headings + footer line */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target)}}),{threshold:.3});
+document.querySelectorAll("main h2.split").forEach(h=>io.observe(h));
+if(fbig){const io2=new IntersectionObserver(e=>{if(e[0].isIntersecting){fbig.classList.add("on");io2.disconnect()}},{threshold:.6});io2.observe(fbig)}
+/* tilt + sheen */
+const tilt=(el,max)=>{el.classList.add("tilt");const sh=document.createElement("i");sh.className="sheen";el.appendChild(sh);if(!fine)return;
+ el.addEventListener("pointermove",e=>{if(el===frame&&!frame.classList.contains("ready"))return;const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  el.style.setProperty("--sx",x*100+"%");el.style.setProperty("--sy",y*100+"%");el.style.transform=`perspective(1600px) rotateX(${((.5-y)*max).toFixed(2)}deg) rotateY(${((x-.5)*max*1.3).toFixed(2)}deg) translateZ(0)`});
+ el.addEventListener("pointerleave",()=>{el.style.transform=""})};
+tilt(frame,3.2);document.querySelectorAll(".ec,.st").forEach(el=>tilt(el,6));
+/* magnetic */
+if(fine)document.querySelectorAll(".totop,.nav .li").forEach(el=>{el.classList.add("mag");
+ el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${((e.clientX-r.left-r.width/2)*.28).toFixed(1)}px,${((e.clientY-r.top-r.height/2)*.35).toFixed(1)}px)`});
+ el.addEventListener("pointerleave",()=>el.style.transform="")});
+let mx=0,my=0;
+/* smooth wheel scroll */
+let tgt=scrollY,cy=scrollY,run=false;const maxY=()=>document.documentElement.scrollHeight-innerHeight;
+const go=()=>{run=true;cy=L(cy,tgt,.085);if(Math.abs(tgt-cy)<.5){cy=tgt;run=false}scrollTo(0,cy);if(run)requestAnimationFrame(go)};
+if(fine){addEventListener("wheel",e=>{if(e.ctrlKey||e.target.closest(".tabs"))return;e.preventDefault();if(!run){tgt=cy=scrollY}
+  tgt=Math.max(0,Math.min(maxY(),tgt+e.deltaY*(e.deltaMode===1?32:1)));if(!run)requestAnimationFrame(go)},{passive:false});
+ addEventListener("scroll",()=>{if(!run){tgt=cy=scrollY}},{passive:true});
+ document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute("href").slice(1),t=id==="top"?null:document.getElementById(id);
+  if(id!=="top"&&!t)return;e.preventDefault();if(!run){cy=scrollY}tgt=t?Math.min(maxY(),t.getBoundingClientRect().top+scrollY-72):0;if(!run)requestAnimationFrame(go)})}
+/* per-frame: parallax, spotlight, cursor, progress */
+let hov=false;hero.addEventListener("pointermove",e=>{const r=hero.getBoundingClientRect();sx=e.clientX-r.left;sy=e.clientY-r.top;hov=true});
+(function loop(t){const y=scrollY,hh=hero.offsetHeight;
+ if(y<hh){const k=Math.min(1,y/(hh*.6));hc.style.transform=`translate3d(0,${(y*.32).toFixed(1)}px,0) scale(${(1-k*.06).toFixed(4)})`;hc.style.opacity=(1-k*.85).toFixed(3)}
+ if(!hov){sx=hero.offsetWidth*(.5+.3*Math.sin(t/2600));sy=hh*(.35+.12*Math.cos(t/2100))}
+ const sp=spot._p||(spot._p={x:sx,y:sy});sp.x=L(sp.x,sx,.07);sp.y=L(sp.y,sy,.07);spot.style.transform=`translate3d(${sp.x.toFixed(1)}px,${sp.y.toFixed(1)}px,0)`;
+ prog.style.transform=`scaleX(${(y/Math.max(1,maxY())).toFixed(4)})`;
+ requestAnimationFrame(loop)})(performance.now());
+})();
+</script>
+</body></html>
