@@ -323,6 +323,7 @@ html:has(body.hb){overflow-x:clip}
 .proc .ph small{margin-top:6px}
 body.hb .proc.rv{transform:translate3d(0,48px,0) scale(.97)}body.hb .proc.rv.on{transform:none}
 @media (hover:none),(max-width:760px){body.hb .rv{transition-duration:.8s,.9s!important;transition-delay:0s!important}body.hb .rv:not(.on){transform:translate3d(0,28px,0)!important}}
+@media (max-width:760px){.proc .ph span{font-size:14.5px;white-space:nowrap;padding:6px 13px 6px 11px;gap:8px}}
 </style></head><body>
 <nav><div class="nav"><a class="brand" href="#top">Ghifariyadi, M</a>
 <div class="links"><a href="#xp">Experience</a><a href="#education">Education</a><a href="#work">Worked on</a><a href="#faq">FAQ</a></div>
@@ -639,8 +640,7 @@ window.__simDraw=draw;
 el.innerHTML=`<div class="ph"><span>Demand forecasting</span><small>Hourly ride demand at Soekarno–Hatta Airport (CGK), used to pre-position drivers before each peak</small></div>
 <div class="scn" id="fcs"><span>Terminal 1</span><span>Terminal 2</span><span>Terminal 3</span></div>
 <div class="sg"><div class="field"><svg id="fcc" viewBox="0 0 340 178"></svg></div>
-<div class="panel"><div class="field"><svg id="fcm" viewBox="0 0 220 150"></svg></div>
-<div class="box plan" id="fcp"></div></div></div>
+<div class="panel"><div class="box plan" id="fcp"></div></div></div>
 <div class="chips2" style="margin-top:12px"><span>Model <b>LightGBM + XGBoost</b></span><span>MAPE <b>12%</b></span><span>Passenger waiting time <b>−42%</b></span></div>
 <p class="note">Hourly demand shapes are illustrative. MAPE and waiting-time figures are from the project.</p>`;
 $("six").appendChild(el);
@@ -663,13 +663,7 @@ const bars=[...Array(24)].map((_,h)=>mk("rect",{x:hx(h)+1.5,width:(X1-X0)/24-3,r
 const band=mk("path",{fill:"rgba(111,216,211,.12)"},c),fl=mk("path",{fill:"none",stroke:"#6fd8d3","stroke-width":1.8,"stroke-linecap":"round","stroke-linejoin":"round"},c);
 const scan=mk("line",{y1:Y0,y2:Y1,stroke:"rgba(255,255,255,.35)","stroke-dasharray":"2 3",opacity:0},c),sd1=mk("circle",{r:3.4,fill:"#c8f3f0",opacity:0},c);
 const tip=mk("g",{opacity:0},c),tipR=mk("rect",{width:114,height:30,rx:7,fill:"#141417",stroke:"rgba(255,255,255,.12)"},tip),t1=mk("text",{style:"fill:#fff;font-weight:500"},tip),t2=mk("text",{},tip);
-const m=$("fcm");const POOL=[38,75],TP=[[178,28],[178,75],[178,122]];
-mk("rect",{x:8,y:48,width:60,height:54,rx:12,fill:"rgba(255,255,255,.03)",stroke:"rgba(255,255,255,.1)","stroke-dasharray":"3 3"},m);
-mk("text",{x:38,y:114,"text-anchor":"middle"},m).textContent="Driver pool";
-const paths=TP.map(([x,y])=>{const d=`M${POOL[0]+22} ${POOL[1]} C 104 ${POOL[1]}, 112 ${y}, ${x-38} ${y}`;const p=mk("path",{d,fill:"none",stroke:"rgba(255,255,255,.07)","stroke-width":1},m);return p});
-const term=TP.map(([x,y],i)=>{const g=mk("g",{},m);const r=mk("rect",{x:x-38,y:y-14,width:78,height:28,rx:14,fill:"#141417",stroke:"rgba(255,255,255,.12)"},g);
- const t=mk("text",{x:x+1,y:y+3.5,"text-anchor":"middle",style:"font-size:10px;fill:#d4d4d8"},g);t.textContent="Terminal "+(i+1);const glow=mk("rect",{x:x-42,y:y-18,width:86,height:36,rx:18,fill:"none",stroke:"#6fd8d3","stroke-width":1,opacity:0},g);return {r,t,glow}});
-const ND=14;const DR=[...Array(ND)].map((_,i)=>({e:mk("circle",{r:3,fill:"#6fd8d3"},m),px:POOL[0]+((i%5)-2)*9,py:POOL[1]+(Math.floor(i/5)-1)*11,ph:rnd()*6}));
+const m=null;const TP=[];
 const fmtH=h=>{const hh=Math.floor(((h%24)+24)%24),mm=Math.round((h-Math.floor(h))*60)%60;return String(hh).padStart(2,"0")+":"+String(mm).padStart(2,"0")};
 const chips=[...$("fcs").children],DUR=11;
 function draw(Tm){const ti=Math.floor(Tm/DUR)%3,t=Tm%DUR,T=TER[ti];chips.forEach((x,i)=>x.classList.toggle("on",i===ti));
@@ -687,14 +681,7 @@ function draw(Tm){const ti=Math.floor(Tm/DUR)%3,t=Tm%DUR,T=TER[ti];chips.forEach
  t2.setAttribute("x",8);t2.setAttribute("y",24);const err=(T.a[hi]-fv)/T.a[hi]*100;t2.textContent=`${Math.round(T.a[hi])} actual  ·  ${err>=0?"+":""}${err.toFixed(0)}% error`;
  const pStart=T.peak-1.5,inPre=sh>=pStart-.2;pre.setAttribute("x",hx(pStart+.5));pre.setAttribute("width",hx(T.peak+1)-hx(pStart+.5));
  const pq=eo(cl((sh-pStart+.2)/1.2))*fo;pre.setAttribute("opacity",pq);preT.setAttribute("x",(hx(pStart+.5)+hx(T.peak+1))/2);preT.setAttribute("y",Y1-4);preT.setAttribute("opacity",pq);
- const mv=cl((sh-pStart)/1.6);
- term.forEach((tm,i)=>{const act=i===ti;tm.r.setAttribute("stroke",act?"rgba(111,216,211,.6)":"rgba(255,255,255,.12)");tm.t.style.fill=act?"#fff":"#8e8e97";
-  const pk=act&&sh>=T.peak&&sh<T.peak+1.6?Math.sin((sh-T.peak)/1.6*Math.PI):0;tm.glow.setAttribute("opacity",(pk*.8*fo).toFixed(3))});
- const path=paths[ti],L=path.getTotalLength();
- DR.forEach((dr,i)=>{const k=eio(cl((mv*1.6-i*.045)/1));let x,y;
-  if(k<=0){x=dr.px+Math.sin(Tm*1.3+dr.ph)*1.2;y=dr.py+Math.cos(Tm*1.1+dr.ph)*1.2}
-  else{const p=path.getPointAtLength(L*Math.min(1,k));const tx=TP[ti][0]-62+(i%4)*5,ty=TP[ti][1]+((i%3)-1)*5;const q=cl((k-.85)/.15);x=lerp(p.x,tx,q);y=lerp(p.y,ty,q)}
-  dr.e.setAttribute("cx",x.toFixed(1));dr.e.setAttribute("cy",y.toFixed(1));dr.e.setAttribute("opacity",(i<Math.min(ND,Math.round(T.drv/3))?1:.25)*fo+(1-fo)*.6)});
+ const mv=0;
  $("fcp").innerHTML=`<div class="pl"><span>Next peak</span><span>${String(T.peak).padStart(2,"0")}:00–${String(T.peak+2).padStart(2,"0")}:00</span></div>
  <div class="pl"><span>Pre-position</span><span><b>${T.drv} drivers</b> from ${fmtH(pStart)}</span></div>
  <div class="pl"><span>Expected at peak</span><span>~${Math.round(T.f[T.peak])} rides / hour</span></div>`}
