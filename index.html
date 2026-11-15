@@ -40,7 +40,7 @@ nav{position:sticky;top:0;z-index:20;background:rgba(10,10,11,.78);backdrop-filt
 .nav .li{margin-left:auto;font-size:15px;color:var(--ink-2);transition:color .2s}.nav .li:hover{color:#fff}
 /* hero */
 .hero{position:relative;isolation:isolate;overflow:hidden;text-align:center;padding:96px 20px 0;border-radius:0 0 40px 40px}
-.hero .bgf{position:absolute;inset:0;z-index:-2;background:#05070c}
+.hero .bgf{position:absolute;inset:0;z-index:-2;background:#020306}
 canvas.fx{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block;opacity:0;transition:opacity .4s ease}
 canvas.fx.on{opacity:1}
 h1 .g{display:inline-block;white-space:nowrap;padding-bottom:.04em;background:linear-gradient(90deg,#ffffff 0%,#c8f3f0 45%,#6fd8d3 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -779,7 +779,7 @@ setTimeout(onScroll,3600);
 
 /* WebGL gradient */
 const PAL={
- ocean:{n:"Ocean",c:["#05070c","#0a2342","#0e6e93","#62e6dc"]},
+ ocean:{n:"Ocean",c:["#030407","#050c16","#071d2b","#0e3f47"]},
  aurora:{n:"Aurora",c:["#040907","#0a3326","#138360","#c0f36e"]},
  ice:{n:"Ice",c:["#06070c","#18204f","#4c62da","#d4dcff"]}};
 const palKey="ocean";
@@ -823,11 +823,11 @@ addEventListener("resize",()=>fxs.forEach(o=>o.size()));
 const t0=performance.now();let last=t0;
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  const k=1-Math.exp(-dt*2.2);colors.forEach((c,i)=>c.forEach((v,j)=>c[j]=v+(target[i][j]-v)*k));
- const t=reduce?8:(now-t0)/1000;
- for(const o of fxs){if(!o.vis)continue;const g=o.gl;g.uniform2f(o.u.r,o.cv.width,o.cv.height);g.uniform1f(o.u.t,t+o.mode*40);g.uniform1f(o.u.mode,o.mode);{const e=Math.min(1,(now-t0)/3200),ee=reduce?1:1-Math.pow(1-e,4);g.uniform1f(o.u.ri,o.mode===0?.35+.65*ee:1)}
+ const t=14;
+ for(const o of fxs){const g=o.gl;g.uniform2f(o.u.r,o.cv.width,o.cv.height);g.uniform1f(o.u.t,t+o.mode*40);g.uniform1f(o.u.mode,o.mode);{const e=Math.min(1,(now-t0)/3200),ee=reduce?1:1-Math.pow(1-e,4);g.uniform1f(o.u.ri,o.mode===0?.35+.65*ee:1)}
   o.u.c.forEach((u,i)=>g.uniform3fv(u,colors[i]));g.drawArrays(g.TRIANGLES,0,3);o.cv.classList.add("on")}
- requestAnimationFrame(frame)}
-requestAnimationFrame(frame);
+ if(now-t0<3600)requestAnimationFrame(frame)}
+requestAnimationFrame(frame);addEventListener("resize",()=>requestAnimationFrame(n=>{last=n;frame(n)}));
 </script><script>
 (()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
 const B=document.body,fine=matchMedia("(hover:hover) and (pointer:fine)").matches,L=(a,b,t)=>a+(b-a)*t;
