@@ -3,7 +3,7 @@
 <meta name="theme-color" content="#0a0a0b">
 <title>Ghifariyadi, M</title>
 <meta name="author" content="Muhammad Ghifariyadi">
-<meta name="description" content="Grad student at UC Berkeley focusing on applied statistics. Previously a senior analyst at Gojek, Katadata, Pintarnya, Bareksa, and Ruangguru.">
+<meta name="description" content="Grad student at UC Berkeley focusing on applied statistics. Previously a senior analyst at Gojek, Katadata, Pintarnya, and Ruangguru.">
 <link rel="canonical" href="https://ghifariyadi.github.io/">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
@@ -221,6 +221,11 @@ body.scrolled .fnav{transform:translate(-50%,0);opacity:1;pointer-events:auto}
  .faq{grid-template-columns:1fr;gap:12px}
  footer{padding-top:48px}.fgrid{grid-template-columns:1fr 1fr;gap:28px 20px}.fgrid>div:first-child{grid-column:1/-1}.fgrid p{font-size:15px}.fbot{margin-top:36px}
 }
+
+/* centred header */
+.nav{display:grid!important;grid-template-columns:1fr auto 1fr;gap:16px}
+.nav .brand{justify-self:start}.nav .links{justify-self:center}.nav .li{justify-self:end;margin-left:0!important}
+@media (max-width:760px){.nav{display:flex!important}.nav .li{margin-left:auto!important}}
 </style></head><body>
 <nav><div class="nav"><a class="brand" href="#top">Ghifariyadi, M</a>
 <div class="links"><a href="#xp">Experience</a><a href="#education">Education</a><a href="#work">Worked on</a><a href="#faq">FAQ</a></div>
@@ -294,13 +299,6 @@ const P=[
       "Researched ways to improve matchmaking between jobseekers and employers on the job platform.",
       "Handled ad-hoc research and hypothesis testing for stakeholders across the company."],
   facts:[["Role","Data Analyst"],["Period","2022–23"],["Scale","10M+ job seekers"]]},
- {id:"bareksa",cat:"work",name:"Bareksa",logo:"bar",yr:"2022",pin:[320,560],
-  title:"Bareksa",sub:"Junior Data Analyst · Product",when:"2022",chip:"Completed trip",
-  desc:"Investment platform for mutual funds, gold, government bonds, and umrah savings. Covered government bonds and partnership products.",
-  hl:["Dug into user onboarding and activation rates. The findings led to a redesign of the onboarding flow.",
-      "Set up and maintained dashboards for several features and products.",
-      "Wrote event tracking documentation for several features and products."],
-  facts:[["Role","Junior Data Analyst"],["Period","2022"]]},
  {id:"ruangguru",cat:"work",name:"Ruangguru",logo:"rg",yr:"2021–22",pin:[180,610],
   title:"Ruangguru",sub:"Business Operations Analyst",when:"2021 – 2022",chip:"Completed trip",
   desc:"Indonesia's largest education technology company. Worked on operations for Roboguru.",
