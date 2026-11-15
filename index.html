@@ -322,6 +322,7 @@ html:has(body.hb){overflow-x:clip}
 .proc .ph span::before{content:"";width:7px;height:7px;border-radius:50%;background:#62e6dc;box-shadow:0 0 10px rgba(98,230,220,.8)}
 .proc .ph small{margin-top:6px}
 body.hb .proc.rv{transform:translate3d(0,48px,0) scale(.97)}body.hb .proc.rv.on{transform:none}
+@media (hover:none),(max-width:760px){body.hb .rv{transition-duration:.8s,.9s!important;transition-delay:0s!important}body.hb .rv:not(.on){transform:translate3d(0,28px,0)!important}}
 </style></head><body>
 <nav><div class="nav"><a class="brand" href="#top">Ghifariyadi, M</a>
 <div class="links"><a href="#xp">Experience</a><a href="#education">Education</a><a href="#work">Worked on</a><a href="#faq">FAQ</a></div>
@@ -817,5 +818,11 @@ let hov=false;hero.addEventListener("pointermove",e=>{const r=hero.getBoundingCl
  prog.style.transform=`scaleX(${(y/Math.max(1,maxY())).toFixed(4)})`;
  requestAnimationFrame(loop)})(performance.now());
 })();
+</script>
+<script>
+/* reveal fallback: mark anything on screen as shown, independent of IntersectionObserver timing */
+(()=>{let tk=0;const chk=()=>{tk=0;const H=innerHeight;document.querySelectorAll(".rv:not(.on),.split:not(.on),.fbig:not(.on)").forEach(e=>{const r=e.getBoundingClientRect();if(r.top<H*.94&&r.bottom>0)e.classList.add("on")})};
+ addEventListener("scroll",()=>{if(!tk){tk=1;requestAnimationFrame(chk)}},{passive:true});addEventListener("touchmove",()=>{if(!tk){tk=1;requestAnimationFrame(chk)}},{passive:true});
+ addEventListener("load",chk);setInterval(chk,400);chk()})();
 </script>
 </body></html>
