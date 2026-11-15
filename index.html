@@ -239,6 +239,11 @@ body.scrolled .fnav{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 }
 
 .hl{color:var(--ink-2)}.pv .desc{color:var(--ink)}
+
+/* tighter hero on desktop, cleaner frame */
+@media (min-width:761px){.hero{padding-top:64px}.sub{margin-top:22px}.btn{margin-top:30px}.frame{margin-top:44px}}
+.frame{background:rgba(6,8,12,.86);border-color:rgba(255,255,255,.09);box-shadow:0 30px 80px -20px rgba(0,0,0,.55)}
+.tabs{background:rgba(255,255,255,.06)}
 </style></head><body>
 <nav><div class="nav"><a class="brand" href="#top">Ghifariyadi, M</a>
 <div class="links"><a href="#xp">Experience</a><a href="#education">Education</a><a href="#work">Worked on</a><a href="#faq">FAQ</a></div>
@@ -330,7 +335,7 @@ const tabs=$("tabs"),pill=$("pill"),screen=$("screen"),pv=$("pv");
 tabs.insertAdjacentHTML("beforeend",W.map(p=>`<button role="tab" data-k="${p.id}" aria-selected="false"><img src="${LOGO[p.logo]}" alt="">${p.name}</button>`).join(""));
 const movePill=(b,inst)=>{if(inst)pill.style.transition="none";pill.style.width=b.offsetWidth+"px";pill.style.transform=`translateX(${b.offsetLeft-4}px)`;if(inst){pill.offsetWidth;pill.style.transition=""}};
 const render=p=>`<div class="who"><span class="lg"><img src="${LOGO[p.logo]}" alt=""></span><div><h3>${p.title}</h3><p>${p.sub}</p></div></div>
- <div class="tbl">${p.facts.map(f=>`<div><span>${f[0]}</span><b style="font-weight:400">${f[1]}</b></div>`).join("")}</div>
+ <div class="tbl">${p.facts.filter(f=>f[0]!=="Role").map(f=>`<div><span>${f[0]}</span><b style="font-weight:400">${f[1]}</b></div>`).join("")}</div>
  <p class="desc">${p.desc}</p><ul class="hl">${(p.hl||[]).map(h=>`<li>${h}</li>`).join("")}</ul>`;
 let cur,tok=0;
 function show(id,anim){if(id===cur)return;cur=id;const p=W.find(x=>x.id===id),b=tabs.querySelector(`[data-k="${id}"]`);
