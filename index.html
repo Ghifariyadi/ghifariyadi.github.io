@@ -714,7 +714,7 @@ el.innerHTML=`<div class="ph"><span>ETL pipelines &amp; dashboards</span><small>
 <svg id="spk" viewBox="0 0 200 54"></svg></div></div></div>
 <div class="chips2" style="margin-top:12px"><span><b>Airflow</b></span><span><b>MaxCompute</b></span><span><b>SQL</b></span></div>
 <p class="note">Illustrative run and numbers. Dashed boxes are existing raw tables.</p>`;
-$("six").appendChild(el);
+$("six").insertBefore(el,$("six").children[1]);
 const NS="http://www.w3.org/2000/svg",mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
 const cl=x=>Math.max(0,Math.min(1,x)),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,eo=t=>1-Math.pow(1-t,3),lerp=(a,b,t)=>a+(b-a)*t;
 const g=$("dag");
