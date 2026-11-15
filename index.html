@@ -304,9 +304,9 @@ html:has(body.hb){overflow-x:clip}
 /* airport demand forecast */
 .fc .sg{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:start}
 .fc svg text{font-family:var(--f);font-size:9px;fill:#8e8e97}
-.fc .chips2{display:flex;gap:6px;flex-wrap:wrap}
-.fc .chips2 span{font-size:12.5px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.05);color:var(--ink-2)}
-.fc .chips2 span b{color:#fff;font-weight:500}
+.chips2{display:flex;gap:6px;flex-wrap:wrap}
+.chips2 span{font-size:12.5px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.05);color:var(--ink-2)}
+.chips2 span b{color:#fff;font-weight:500}
 .fc .plan{font-size:13.5px;line-height:1.45;color:var(--ink-2)}
 .fc .plan b{color:#fff;font-weight:500}
 .fc .plan .pl{display:flex;justify-content:space-between;gap:10px;padding:8px 0}.fc .plan .pl+.pl{border-top:1px solid var(--line)}
@@ -324,6 +324,19 @@ html:has(body.hb){overflow-x:clip}
 body.hb .proc.rv{transform:translate3d(0,48px,0) scale(.97)}body.hb .proc.rv.on{transform:none}
 @media (hover:none),(max-width:760px){body.hb .rv{transition-duration:.8s,.9s!important;transition-delay:0s!important}body.hb .rv:not(.on){transform:translate3d(0,28px,0)!important}}
 @media (max-width:760px){.proc .ph span{font-size:14.5px;white-space:nowrap;padding:6px 13px 6px 11px;gap:8px}}
+/* ETL + dashboard card */
+.etl .sg{align-items:start}
+.etl svg text{font-family:var(--f);font-size:9px;fill:#8e8e97}
+.etl .dash{padding:14px}
+.etl .dh{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13.5px;color:#fff;font-weight:500}
+.etl .dh em{font-style:normal;font-size:11.5px;font-weight:400;color:var(--ink-3);padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.05);white-space:nowrap;transition:background .5s,color .5s}
+.etl .dh em.ok{background:rgba(111,216,211,.14);color:#c8f3f0}
+.etl .kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 10px}
+.etl .kp div{border-radius:12px;background:rgba(255,255,255,.04);padding:9px 10px}
+.etl .kp small{display:block;font-size:11px;color:var(--ink-3);white-space:nowrap}
+.etl .kp b{display:block;margin-top:2px;font-size:16px;font-weight:500;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.etl #spk{display:block;width:100%;height:auto}
+@media (max-width:760px){.etl .sg{grid-template-columns:1fr}.etl .kp b{font-size:15px}}
 </style></head><body>
 <nav><div class="nav"><a class="brand" href="#top">Ghifariyadi, M</a>
 <div class="links"><a href="#xp">Experience</a><a href="#education">Education</a><a href="#work">Worked on</a><a href="#faq">FAQ</a></div>
@@ -421,7 +434,7 @@ let cur,tok=0;
 function show(id,anim){if(id===cur)return;cur=id;const p=W.find(x=>x.id===id),b=tabs.querySelector(`[data-k="${id}"]`);
  tabs.querySelectorAll("button").forEach(x=>x.setAttribute("aria-selected",x===b));movePill(b,!anim);
  if(!anim){pv.innerHTML=render(p);return}
- b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
+ tabs.scrollTo({left:Math.max(0,b.offsetLeft-(tabs.clientWidth-b.offsetWidth)/2),behavior:"smooth"});
  const t=++tok;screen.style.height=screen.offsetHeight+"px";pv.classList.add("out");
  setTimeout(()=>{if(t!==tok)return;pv.classList.remove("out");pv.classList.add("pre");pv.innerHTML=render(p);screen.style.height=pv.offsetHeight+2+"px";
   requestAnimationFrame(()=>requestAnimationFrame(()=>pv.classList.remove("pre")));
@@ -690,6 +703,67 @@ if(REP){draw(9.8)}else{let vis=false,acc=0,last=performance.now();draw(0);
  new IntersectionObserver(e=>{vis=e[0].isIntersecting},{threshold:.25}).observe(el);
  (function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(vis&&!window.__noloop){acc+=dt;draw(acc)}requestAnimationFrame(loop)})(last)}
 window.__fcDraw=draw;
+})();
+
+/* ETL pipelines (Airflow DAG) feeding a dashboard */
+(()=>{const el=document.createElement("div");el.className="proc sim etl";
+el.innerHTML=`<div class="ph"><span>ETL pipelines &amp; dashboards</span><small>Airflow moves raw data into the warehouse every morning, then the dashboards refresh on their own</small></div>
+<div class="sg"><div class="field"><svg id="dag" viewBox="0 0 340 196"></svg></div>
+<div class="panel"><div class="box dash"><div class="dh"><span>Marketplace health</span><em id="dst">Waiting for pipeline</em></div>
+<div class="kp"><div><small>Completed trips</small><b id="k0">–</b></div><div><small>Fulfilment</small><b id="k1">–</b></div><div><small>Avg wait</small><b id="k2">–</b></div></div>
+<svg id="spk" viewBox="0 0 200 54"></svg></div></div></div>
+<div class="chips2" style="margin-top:12px"><span><b>Airflow</b></span><span><b>BigQuery</b></span><span><b>MaxCompute</b></span><span><b>Looker Studio</b></span></div>
+<p class="note">Illustrative run and numbers.</p>`;
+$("six").appendChild(el);
+const NS="http://www.w3.org/2000/svg",mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+const cl=x=>Math.max(0,Math.min(1,x)),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,eo=t=>1-Math.pow(1-t,3),lerp=(a,b,t)=>a+(b-a)*t;
+const g=$("dag");
+const hd=mk("text",{x:6,y:13},g);hd.textContent="marketplace_daily  ·  @daily 05:00";
+const W=74,H=26;
+const N=[{id:"app_db",l:"extract_app",x:6,y:40,t:[.6,1.8]},{id:"events",l:"extract_evt",x:6,y:104,t:[.75,1.95]},
+ {id:"gcs",l:"load_gcs",x:96,y:72,t:[2.1,3.1]},{id:"bq",l:"transform",x:184,y:72,t:[3.25,4.45]},
+ {id:"dq",l:"dq_checks",x:262,y:40,t:[4.6,5.4]},{id:"dash",l:"refresh",x:262,y:104,t:[5.55,6.25]}];
+const E=[["app_db","gcs"],["events","gcs"],["gcs","bq"],["bq","dq"],["dq","dash"]];
+const byI=Object.fromEntries(N.map(n=>[n.id,n]));
+const EP=E.map(([a,b])=>{const A=byI[a],B=byI[b];let d;
+ if(a==="dq")d=`M${A.x+W/2} ${A.y+H} L${B.x+W/2} ${B.y}`;
+ else{const x1=A.x+W,y1=A.y+H/2,x2=B.x,y2=B.y+H/2,mx=(x1+x2)/2;d=`M${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`}
+ const p=mk("path",{d,fill:"none",stroke:"rgba(255,255,255,.12)","stroke-width":1},g);
+ const lit=mk("path",{d,fill:"none",stroke:"#6fd8d3","stroke-width":1.2,opacity:.0},g);const L=p.getTotalLength();lit.style.strokeDasharray=L;lit.style.strokeDashoffset=L;
+ const pk=[0,1,2].map(()=>mk("circle",{r:2,fill:"#c8f3f0",opacity:0},g));return {p,lit,L,pk,from:A,to:B}});
+N.forEach(n=>{n.g=mk("g",{},g);n.r=mk("rect",{x:n.x,y:n.y,width:W,height:H,rx:7,fill:"#141417",stroke:"rgba(255,255,255,.14)"},n.g);
+ n.ring=mk("rect",{x:n.x-.5,y:n.y-.5,width:W+1,height:H+1,rx:7.5,fill:"none",stroke:"#6fd8d3","stroke-width":1.2,"stroke-dasharray":"6 4",opacity:0},n.g);
+ n.dot=mk("circle",{cx:n.x+10,cy:n.y+H/2,r:3,fill:"#52525b"},n.g);
+ const t=mk("text",{x:n.x+18,y:n.y+H/2+3,style:"font-family:ui-monospace,Menlo,monospace;font-size:7.6px;fill:#d4d4d8"},n.g);t.textContent=n.l;n.tx=t});
+const GY=158;const gl=mk("text",{x:6,y:GY-6},g);gl.textContent="last 14 runs";
+const sq=[...Array(14)].map((_,i)=>mk("rect",{x:6+i*13,y:GY,width:10,height:10,rx:2.5,fill:i<13?"rgba(111,216,211,.55)":"rgba(255,255,255,.08)"},g));
+const leg=mk("g",{},g);[["#52525b","queued"],["#6fd8d3","running"],["#c8f3f0","success"]].forEach(([c,l],i)=>{mk("circle",{cx:200+i*46,cy:GY+5,r:3,fill:c},leg);mk("text",{x:206+i*46,y:GY+8},leg).textContent=l});
+const dur=mk("text",{x:334,y:13,"text-anchor":"end"},g);
+/* dashboard */
+const sp=$("spk");const base=[42,40,44,43,47,46,49,48,51,50,53,52,55];const sx=i=>4+i*(192/13),sy=v=>50-(v-34)*1.9;
+mk("line",{x1:4,x2:196,y1:50,y2:50,stroke:"rgba(255,255,255,.08)"},sp);
+const area=mk("path",{fill:"rgba(111,216,211,.10)"},sp),line=mk("path",{fill:"none",stroke:"#6fd8d3","stroke-width":1.6,"stroke-linecap":"round","stroke-linejoin":"round"},sp),last=mk("circle",{r:3,fill:"#c8f3f0"},sp);
+const KP=[[1.21,1.28,v=>v.toFixed(2)+"M"],[91.8,93.4,v=>v.toFixed(1)+"%"],[5.3,4.8,v=>v.toFixed(1)+" min"]];
+const D=10;
+function draw(T){const t=T%D,fo=1-cl((t-9.4)/.6),k=t<9.4?1:fo;
+ N.forEach(n=>{const[a,b]=n.t;let st=t<a?0:t<b?1:2;if(t>9.4)st=2;
+  n.dot.setAttribute("fill",st===0?"#52525b":st===1?"#6fd8d3":"#c8f3f0");
+  n.ring.setAttribute("opacity",st===1?1:0);n.ring.style.strokeDashoffset=(-t*28).toFixed(1);
+  n.r.setAttribute("stroke",st===2?"rgba(111,216,211,.45)":"rgba(255,255,255,.14)");n.r.setAttribute("fill",st===2?"rgba(111,216,211,.07)":"#141417");
+  n.dot.setAttribute("r",st===1?3+Math.sin(t*9)*.8:3);n.g.setAttribute("opacity",(.35+.65*k).toFixed(3))});
+ EP.forEach(e=>{const s=e.from.t[1],f=e.to.t[0],q=cl((t-s+.15)/(f-s+.3));e.lit.style.strokeDashoffset=(e.L*(1-eio(q))).toFixed(1);e.lit.setAttribute("opacity",(.8*k).toFixed(3));
+  e.pk.forEach((c,i)=>{const u=cl((t-s+.1-i*.12)/(f-s+.25));if(u<=0||u>=1){c.setAttribute("opacity",0);return}const P=e.p.getPointAtLength(e.L*eio(u));c.setAttribute("cx",P.x.toFixed(1));c.setAttribute("cy",P.y.toFixed(1));c.setAttribute("opacity",(Math.sin(u*Math.PI)*k).toFixed(3))})});
+ const done=t>=6.25&&t<9.4;sq[13].setAttribute("fill",done?"rgba(200,243,240,.9)":t>=.6&&t<6.25?"rgba(111,216,211,.25)":"rgba(255,255,255,.08)");
+ dur.textContent=t<.6?"run queued":t<6.25?"running · "+(t-.6).toFixed(1)+"s":"success · 5m 39s";
+ const r=eo(cl((t-6.25)/1.2));const pts=[...base,lerp(base[12],57,r)];let dd="";pts.forEach((v,i)=>{if(i===13&&r<=0)return;dd+=(dd?"L":"M")+sx(i).toFixed(1)+" "+sy(v).toFixed(1)});
+ line.setAttribute("d",dd);area.setAttribute("d",dd+`L${sx(r>0?13:12)} 50L4 50Z`);const li=r>0?13:12;last.setAttribute("cx",sx(li));last.setAttribute("cy",sy(pts[li]));
+ KP.forEach(([a,b,f],i)=>{$("k"+i).textContent=f(lerp(a,b,r))});
+ const ds=$("dst");if(t>=6.25&&t<9.4){ds.textContent="Refreshed 05:42 ✓";ds.className="ok"}else{ds.textContent=t<.6?"Last refreshed yesterday":"Waiting for pipeline…";ds.className=""}}
+const REP=matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(REP){draw(8)}else{let vis=false,acc=0,lt=performance.now();draw(0);
+ new IntersectionObserver(e=>{vis=e[0].isIntersecting},{threshold:.2}).observe(el);
+ (function loop(now){const dt=Math.min(.05,(now-lt)/1000);lt=now;if(vis&&!window.__noloop){acc+=dt;draw(acc)}requestAnimationFrame(loop)})(lt)}
+window.__etlDraw=draw;
 })();
 
 document.querySelectorAll("#edu .ec,#six>div").forEach((el,i)=>{el.classList.add("rv");el.style.setProperty("--d",((i%6)*.06)+"s");io.observe(el)});
