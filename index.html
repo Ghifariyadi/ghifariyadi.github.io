@@ -707,23 +707,23 @@ window.__fcDraw=draw;
 
 /* ETL pipelines (Airflow DAG) feeding a dashboard */
 (()=>{const el=document.createElement("div");el.className="proc sim etl";
-el.innerHTML=`<div class="ph"><span>ETL pipelines &amp; dashboards</span><small>Airflow picks up intermediate warehouse tables, transforms them for one specific need, then the dashboard refreshes on its own</small></div>
+el.innerHTML=`<div class="ph"><span>ETL pipelines &amp; dashboards</span><small>Airflow picks up raw warehouse tables, transforms them for one specific need, then the dashboard refreshes on its own</small></div>
 <div class="sg"><div class="field"><svg id="dag" viewBox="0 0 340 196"></svg></div>
 <div class="panel"><div class="box dash"><div class="dh"><span>Marketplace health · weekly</span><em id="dst">Waiting for pipeline</em></div>
 <div class="kp"><div><small>Completed trips</small><b id="k0">–</b></div><div><small>Fulfilment</small><b id="k1">–</b></div><div><small>Avg wait</small><b id="k2">–</b></div></div>
 <svg id="spk" viewBox="0 0 200 54"></svg></div></div></div>
 <div class="chips2" style="margin-top:12px"><span><b>Airflow</b></span><span><b>MaxCompute</b></span><span><b>SQL</b></span></div>
-<p class="note">Illustrative run and numbers. Dashed boxes are existing intermediate tables.</p>`;
+<p class="note">Illustrative run and numbers. Dashed boxes are existing raw tables.</p>`;
 $("six").appendChild(el);
 const NS="http://www.w3.org/2000/svg",mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
 const cl=x=>Math.max(0,Math.min(1,x)),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,eo=t=>1-Math.pow(1-t,3),lerp=(a,b,t)=>a+(b-a)*t;
 const g=$("dag");
 const hd=mk("text",{x:6,y:13},g);hd.textContent="marketplace_weekly  ·  Mondays 05:00";
 const W=74,H=26;
-const N=[{id:"trips",l:"trips_mid",x:6,y:40,t:[0,.6],tb:1},{id:"supply",l:"supply_mid",x:6,y:104,t:[0,.75],tb:1},
- {id:"join",l:"join_trips",x:96,y:72,t:[.9,2.5],w:1},{id:"agg",l:"agg_weekly",x:184,y:72,t:[2.65,4.3]},
+const N=[{id:"pricing",l:"pricing_raw",x:6,y:26,t:[0,.6],tb:1},{id:"orders",l:"orders_raw",x:6,y:72,t:[0,.7],tb:1},{id:"users",l:"users_raw",x:6,y:118,t:[0,.8],tb:1},
+ {id:"join",l:"join_orders",x:96,y:72,t:[.9,2.5],w:1},{id:"agg",l:"agg_weekly",x:184,y:72,t:[2.65,4.3]},
  {id:"dq",l:"dq_checks",x:262,y:40,t:[4.45,5.3]},{id:"dash",l:"refresh",x:262,y:104,t:[5.45,6.25]}];
-const E=[["trips","join"],["supply","join"],["join","agg"],["agg","dq"],["dq","dash"]];
+const E=[["pricing","join"],["orders","join"],["users","join"],["join","agg"],["agg","dq"],["dq","dash"]];
 const byI=Object.fromEntries(N.map(n=>[n.id,n]));
 const EP=E.map(([a,b])=>{const A=byI[a],B=byI[b];let d;
  if(a==="dq")d=`M${A.x+W/2} ${A.y+H} L${B.x+W/2} ${B.y}`;
@@ -736,7 +736,7 @@ N.forEach(n=>{n.g=mk("g",{},g);n.r=mk("rect",{x:n.x,y:n.y,width:W,height:H,rx:7,
  n.dot=mk("circle",{cx:n.x+10,cy:n.y+H/2,r:3,fill:"#52525b"},n.g);
  if(n.tb){n.r.setAttribute("stroke-dasharray","3 3");n.dot.setAttribute("opacity",0);const ic=mk("g",{opacity:.75},n.g);mk("rect",{x:n.x+6,y:n.y+H/2-4,width:9,height:8,rx:1.5,fill:"none",stroke:"#a1a1aa","stroke-width":.9},ic);mk("line",{x1:n.x+6,x2:n.x+15,y1:n.y+H/2-1,y2:n.y+H/2-1,stroke:"#a1a1aa","stroke-width":.9},ic);mk("line",{x1:n.x+10.5,x2:n.x+10.5,y1:n.y+H/2-1,y2:n.y+H/2+4,stroke:"#a1a1aa","stroke-width":.9},ic)}
  const t=mk("text",{x:n.x+18,y:n.y+H/2+3,style:"font-family:ui-monospace,Menlo,monospace;font-size:7.6px;fill:#d4d4d8"},n.g);t.textContent=n.l;n.tx=t});
-const GY=158;const gl=mk("text",{x:6,y:GY-6},g);gl.textContent="last 14 runs";
+const GY=170;const gl=mk("text",{x:6,y:GY-6},g);gl.textContent="last 14 runs";
 const sq=[...Array(14)].map((_,i)=>mk("rect",{x:6+i*13,y:GY,width:10,height:10,rx:2.5,fill:i<13?"rgba(111,216,211,.55)":"rgba(255,255,255,.08)"},g));
 const leg=mk("g",{},g);[["#52525b","queued"],["#6fd8d3","running"],["#c8f3f0","success"]].forEach(([c,l],i)=>{mk("circle",{cx:200+i*46,cy:GY+5,r:3,fill:c},leg);mk("text",{x:206+i*46,y:GY+8},leg).textContent=l});
 const dur=mk("text",{x:334,y:13,"text-anchor":"end"},g);
